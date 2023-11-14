@@ -1,0 +1,2 @@
+---
+content_source: "{{ lookup, 'ansible.builtin.url', 'https://raw.githubusercontent.com/nicholasburr/Ansible-Demos/main/endpoints/list1.txt' }}"

@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+{% for repo in gitolite_conf_repos %}
+{{ repo.name }}
+{% for perm in repo.permissions %}
+    {{ perm }}
+{% endfor %}
+{% endfor %}
+

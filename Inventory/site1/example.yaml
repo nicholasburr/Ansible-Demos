@@ -1,0 +1,19 @@
+---
+all:
+ungrouped:
+  hosts:
+    host0.example.com:
+webservers:
+  hosts:
+    host2.example.com:
+    host3.example.com:
+dbservers:
+  hosts:
+    host1.example.com:
+    host4.example.com:
+east:
+  hosts:
+    host1.example.com:
+prod:
+  children:
+    east:

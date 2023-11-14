@@ -1,0 +1,14 @@
+---
+- name: Create templates using diffrent Jinja2 templates.
+  hosts: host0.example.com,webservers,prod
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: copy templates to /tmp
+      template:
+        src: "templates/{{ item.src }}"
+        dest: "/tmp/{{ item.src }}"
+        mode: 0775
+      loop:
+        - src: jinja2-for-loop.yaml
+        - src: jinja2-if-statement.yaml

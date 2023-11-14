@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+{% if gitolite_conf_url is defined %}
+# Content is managed at {{ gitolite_conf_url }}
+
+{{ lookup ('url', '{{ gitolite_conf_url }}', split_lines=False, validate_certs=False) }}
+{% else %}
+# No content was provided
+{% endif %}
