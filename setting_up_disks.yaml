@@ -1,0 +1,15 @@
+---
+- hosts: all
+  vars:
+    disks:
+      - name: ssd-001-local
+        device: /dev/sdb
+        mount: /opt
+      - name: hdd-001-local
+        device: /dev/sdc
+        mount: /etc
+  tasks:
+    - name: import tasks
+      ansible.builtin.include_tasks:
+        file: tasks/cleaning_volumes.yaml
+      loop: "{{ disks }}"

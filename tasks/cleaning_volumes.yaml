@@ -1,0 +1,39 @@
+# based on https://www.redhat.com/sysadmin/automating-logical-volume-manager
+---
+- name: create partition
+  ansible.builtin.parted:
+    device: "{{ item.device }}"
+    number: 1
+    flags: [ lvm ]
+    state: present
+
+- name: task for creating volume group
+  ansible.builtin.lvg:
+      vg: "{{ item.name }}-vg"
+      pvs: "{{ item.device }}"
+      pesize: 1
+
+- name: task for creating logical volume
+  ansible.builtin.lvol:
+      vg: "{{ item.name }}-vg"
+      lv:  "{{ item.name }}-lv"
+      size: 1g
+      force: ye
+
+- name: Create directory data1 if does not exist
+  ansible.builtin.file:
+    path: "{{ item.mount }}/{{ item.name }}"
+    state: directory
+    mode: '0755'
+
+- name: format the xfs filesystem
+  ansible.builtin.filesystem:
+    fstype: xfs
+    dev: "/dev/{{ item.name }}-vg/{{ item.name }}-lv"
+
+- name: mount the lv on /data1
+  ansible.builtin.mount:
+    path: /data1
+    src: "/dev/{{ item.name }}-vg/{{ item.name }}-lv"
+    fstype: xfs
+    state: mounted

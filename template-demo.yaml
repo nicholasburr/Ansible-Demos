@@ -5,10 +5,11 @@
   gather_facts: false
   tasks:
     - name: copy templates to /tmp
-      template:
+      ansible.builtin.template:
         src: "templates/{{ item.src }}"
         dest: "/tmp/{{ item.src }}"
-        mode: 0775
+        mode: "{{ item.mode | default(0775) }}"
       loop:
         - src: jinja2-for-loop.yaml
         - src: jinja2-if-statement.yaml
+          mode: 0777
