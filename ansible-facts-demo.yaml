@@ -1,0 +1,16 @@
+---
+- name: demonstrate using ansible facts
+  hosts: local_servers
+  gather_facts: true
+  tasks:
+    - name: run lsblk
+      shell: 'lsblk -nd --output NAME'
+      register: lsblk_data
+
+    - name: show lsblk_data
+      debug:
+        var: lsblk_data
+
+    - name: show ansible_facts
+      debug:
+        var: ansible_facts['devices']
