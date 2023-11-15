@@ -1,0 +1,23 @@
+---
+- name: playing with count
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - "{{ my_survey_var }}.yaml"
+  vars: 
+    my_survey_var: null
+  pre_tasks:
+  - name: read vars from first file found, use 'vars/' relative subdir
+    ansible.builtin.include_vars: "{{lookup('ansible.builtin.first_found', params)}}"
+    vars:
+      params:
+        files:
+          - '{{ my_survey_var }}.yaml'
+          - main.yaml
+        paths:
+          - 'vars'
+
+  tasks:
+    - debug:
+        var: disks
