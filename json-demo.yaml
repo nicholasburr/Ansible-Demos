@@ -1,0 +1,26 @@
+---
+- name: Use json filters to collect data from a Variable.
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: collect json data and create a varible with it.
+      uri:
+        url: http://localhost:8080/output.json
+      register: server_info
+
+#    - name: debug server_info varible
+#      debug:
+#        var: server_info
+
+    - name: Find disk mouts points
+      debug:
+        var: item
+      loop: "{{ server_info | json_query('json.openstack_servers[*].volumes[*].device') }}"
+
+    - name: find all attachment data
+      debug:
+        var: item
+      loop: "{{ server_info | json_query('json.openstack_servers[*].volumes[*].attachments') }}"
+...
+# This requires a data from a file that is not included in the repository. The data is based ont he output from the openstack.cloud.server_info module.
