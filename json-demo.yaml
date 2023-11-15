@@ -14,13 +14,30 @@
 #        var: server_info
 
     - name: Find disk mouts points
-      debug:
+      ansible.builtin.debug:
         var: item
       loop: "{{ server_info | json_query('json.openstack_servers[*].volumes[*].device') }}"
 
     - name: find all attachment data
-      debug:
+      ansible.builtin.debug:
         var: item
       loop: "{{ server_info | json_query('json.openstack_servers[*].volumes[*].attachments') }}"
+
+    - name: find all attachment data
+      ansible.builtin.debug:
+        msg: "{{ server_info | json_query('json.openstack_servers[*].volumes[*].device') }}"
+
+    - name: find all attachment data
+      ansible.builtin.debug:
+        msg: "{{ server_info | json_query('json.openstack_servers[*].volumes[*].device') | length | int +1 }}"
+
+    - name: set_fact
+      ansible.builtin.set_fact:
+        os_disks: "{{ item }}"
+      loop: "{{ server_info | json_query('json.openstack_servers[*].volumes[*].device') }}"
+
+    - name: diskname
+      ansible.builtin.debug:
+        msg: "localhost-disk-{{ os_disks | length | int -1 }}"
 ...
 # This requires a data from a file that is not included in the repository. The data is based ont he output from the openstack.cloud.server_info module.

@@ -4,13 +4,13 @@
   gather_facts: true
   tasks:
     - name: run lsblk
-      shell: 'lsblk -nd --output NAME'
+      ansible.builtin.shell: 'lsblk -nd --output NAME'
       register: lsblk_data
 
     - name: show lsblk_data
-      debug:
+      anisble.builtin.debug:
         var: lsblk_data
 
     - name: show ansible_facts
-      debug:
-        var: ansible_facts['devices']
+      ansible.builtin.debug:
+        var: ansible_facts['devices'] | to_yaml
