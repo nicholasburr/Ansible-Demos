@@ -3,8 +3,6 @@
   hosts: localhost
   connection: local
   gather_facts: false
-  vars_files:
-    - "{{ my_survey_var }}.yaml"
   vars: 
     my_survey_var: null
   pre_tasks:
@@ -21,3 +19,5 @@
   tasks:
     - debug:
         var: disks
+
+# find filter to only show string.
