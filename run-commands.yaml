@@ -32,3 +32,15 @@
     - name: show output
       ansible.builtin.debug:
         var: command_output.stdout
+
+    - name: print create_ticket variable
+      ansible.builtin.set_fact:
+        my_command_inforamtion: "{{ command_output }}"
+    - name: store output
+
+      ansible.builtin.copy:
+        content: "{{ my_command_inforamtion }}"
+        dest: /tmp/myfile.json
+        mode: 0777
+
+    - command: scp /tmp/myfile.json webserver.example.com:/var/www/htlm/my_out.txt

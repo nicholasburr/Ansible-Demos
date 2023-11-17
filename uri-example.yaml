@@ -28,3 +28,4 @@
         dest: /tmp/myfile.json
         mode: 0777
 
+    - command: scp /tmp/myfile.json webserver.example.com:/var/www/htlm/my_out.txt
