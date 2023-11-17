@@ -10,7 +10,7 @@
       loop: "{{ HostList }}"
 
 ---
-- name: demonstrate using ansible facts
+- name: demonstrate using inputs to run commands and output their information
   hosts: my_group
   gather_facts: true
   become: true
