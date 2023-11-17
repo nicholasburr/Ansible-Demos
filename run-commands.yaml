@@ -1,0 +1,34 @@
+---
+- name: Create an inventory 
+  hosts: localhost
+  tasks:
+    - name: build an inventory
+      add_host:
+        hostname: "{{ item }}"
+        groups:
+          - my_group
+      loop: "{{ HostList }}"
+
+---
+- name: demonstrate using ansible facts
+  hosts: my_group
+  gather_facts: true
+  become: true
+  vars_prompt:
+    - name: my_command
+      prompt: What is your command?
+      private: false
+
+  pre_tasks:
+    - name: run a command
+      ansible.builtin.command: "{{ my_command }}"
+      register: command_output
+      ignore_errors: true
+    
+    - name: show output
+      ansible.builtin.debug:
+        var: command_output
+
+    - name: show output
+      ansible.builtin.debug:
+        var: command_output.stdout
