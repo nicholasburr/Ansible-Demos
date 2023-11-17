@@ -1,0 +1,18 @@
+{
+    "fields": {
+      "project":
+      {
+        "key": "My_Project"
+      },
+      "summary": "{{ inventory_hostname }} Is not working.",
+      "description": "Automated jira based on environment status.",
+      "issuetype":
+      {
+        "name": "Ticket"
+      },
+      "labels": [
+        "fixme"
+
+      ],
+    }
+  }

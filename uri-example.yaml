@@ -1,0 +1,14 @@
+---
+- hosts: mygroup
+  connection: local
+  tasks:
+    - name: Create ticket for builder
+      ansible.builtin.uri:
+        headers:
+          Authorization: Bearer {{ myteam_jira_token }}
+          Accept: application/json
+        url: "https://tickets.example.com/rest/api/2/issue"
+        method: "POST"
+        status_code: 201
+        body_format: json
+        body: "{{ lookup('template', 'templates/uri_body.json') }}"
