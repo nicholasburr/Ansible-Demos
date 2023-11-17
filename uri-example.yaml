@@ -12,3 +12,13 @@
         status_code: 201
         body_format: json
         body: "{{ lookup('template', 'templates/uri_body.json') }}"
+      register: created_ticket
+
+    - name: print create_ticket variable
+      ansible.builtin.debug:
+        var: created_ticket
+
+    - name: print create_ticket variable
+      ansible.builtin.set_fact:
+        my_ticket_inforamtion: "{{ created_ticket }}"
+        
