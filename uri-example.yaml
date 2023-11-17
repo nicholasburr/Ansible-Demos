@@ -20,5 +20,11 @@
 
     - name: print create_ticket variable
       ansible.builtin.set_fact:
-        my_ticket_inforamtion: "{{ created_ticket }}"
-        
+        my_ticket_inforamtion: "{{ created_ticket | to_nice_json }}"
+
+    - name: store output
+      ansible.builtin.copy:
+        content: "{{ my_ticket_inforamtion }}"
+        dest: /tmp/myfile.json
+        mode: 0777
+
