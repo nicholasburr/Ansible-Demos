@@ -20,3 +20,6 @@
         msg: "{{ domain_definition | to_json | from_json | community.general.json_query(server_name_query) }}"
       vars:
         server_name_query: "domain.server[?contains(name,'server1')].port"
+
+...
+# Works based on https://docs.ansible.com/ansible/latest/collections/community/general/docsite/filter_guide_selecting_json_data.html
