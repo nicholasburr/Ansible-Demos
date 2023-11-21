@@ -1,0 +1,6 @@
+---
+- name: copy templates to /tmp
+  ansible.builtin.template:
+    src: "templates/{{ item.src }}"
+    dest: "/tmp/{{ item.src }}"
+  become: "{{ become_vaule | default(false) }}"

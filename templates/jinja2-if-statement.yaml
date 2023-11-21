@@ -2,7 +2,21 @@
 {% if gitolite_conf_url is defined %}
 # Content is managed at {{ gitolite_conf_url }}
 
-{{ lookup ('url', '{{ gitolite_conf_url }}', split_lines=False, validate_certs=False) }}
+{{ lookup ('url', '{{ gitolite_conf_url }}', split_lines=False, validate_certs=False) | length | int + 1 }}
 {% else %}
 # No content was provided
 {% endif %}
+
+# Nested if statements
+#{% if item.distro == 'rhel8' %} 
+#  {% if ansible_facts.architecture == 'ppc64le' %}
+#    <type arch='{{ ansible_facts.architecture }}' machine='pseries-rhel8.2.0'>hvm</type>
+#  {% elif ansible_facts.architecture == 's390x' %}
+#    <type arch='{{ ansible_facts.architecture }}' machine='s390-ccw-virtio-rhel8.2.0'>hvm</type>
+#  {% elif ansible_facts.architecture == 'x86_64' %}}
+#    <type arch='{{ ansible_facts.architecture }}' machine='pc-q35-rhel8.2.0'>hvm</type>
+#  {% else %}
+#    <type arch='{{ ansible_facts.architecture }}' machine='virt-rhel8.2.0'>hvm</type>
+#  {% endif %}
+#{% endif %}
+#

@@ -5,39 +5,18 @@
   gather_facts: false
   tasks:
     - name: collect json data and create a varible with it.
-      uri:
+      ansible.builtin.uri:
         url: http://localhost:8080/output.json
-      register: server_info
+      register: domain_definition
 
-#    - name: debug server_info varible
-#      debug:
-#        var: server_info
-
-    - name: Find disk mouts points
+    - name: Display all server ports and names from cluster1
       ansible.builtin.debug:
         var: item
-      loop: "{{ server_info | json_query('json.openstack_servers[*].volumes[*].device') }}"
-
-    - name: find all attachment data
+      loop: "{{ domain_definition | community.general.json_query(server_name_cluster1_query) }}"
+      vars:
+        server_name_cluster1_query: "json.domain.server[?cluster=='cluster2'].{name: name, port: port}"
+    - name: Display all ports from cluster1
       ansible.builtin.debug:
-        var: item
-      loop: "{{ server_info | json_query('json.openstack_servers[*].volumes[*].attachments') }}"
-
-    - name: find all attachment data
-      ansible.builtin.debug:
-        msg: "{{ server_info | json_query('json.openstack_servers[*].volumes[*].device') }}"
-
-    - name: find all attachment data
-      ansible.builtin.debug:
-        msg: "{{ server_info | json_query('json.openstack_servers[*].volumes[*].device') | length | int +1 }}"
-
-    - name: set_fact
-      ansible.builtin.set_fact:
-        os_disks: "{{ item }}"
-      loop: "{{ server_info | json_query('json.openstack_servers[*].volumes[*].device') }}"
-
-    - name: diskname
-      ansible.builtin.debug:
-        msg: "localhost-disk-{{ os_disks | length | int -1 }}"
-...
-# This requires a data from a file that is not included in the repository. The data is based ont he output from the openstack.cloud.server_info module.
+        msg: "{{ domain_definition | to_json | from_json | community.general.json_query(server_name_query) }}"
+      vars:
+        server_name_query: "domain.server[?contains(name,'server1')].port"

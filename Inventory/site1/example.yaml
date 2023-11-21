@@ -3,7 +3,6 @@ all:
 ungrouped:
   hosts:
     host0.example.com:
-    192.168.1.112:
 webservers:
   hosts:
     host2.example.com:
@@ -15,6 +14,12 @@ dbservers:
 east:
   hosts:
     host1.example.com:
+local_servers:
+  hosts:
+    localhost:
+    192.168.1.112:
+      ansible_user: nicholasburr
 prod:
   children:
     east:
+    local_servers:

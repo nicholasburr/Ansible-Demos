@@ -15,10 +15,10 @@
 
 - name: task for creating logical volume
   ansible.builtin.lvol:
-      vg: "{{ item.name }}-vg"
-      lv:  "{{ item.name }}-lv"
-      size: 1g
-      force: ye
+    vg: "{{ item.name }}-vg"
+    lv:  "{{ item.name }}-lv"
+    size: 1g
+    force: ye
 
 - name: Create directory data1 if does not exist
   ansible.builtin.file:
@@ -29,7 +29,7 @@
 - name: format the xfs filesystem
   ansible.builtin.filesystem:
     fstype: xfs
-    dev: "/dev/{{ item.name }}-vg/{{ item.name }}-lv"
+    dev: "/dev/{{ item.name }}-vg/{{ item.name}}-lv"
 
 - name: mount the lv on /data1
   ansible.builtin.mount:

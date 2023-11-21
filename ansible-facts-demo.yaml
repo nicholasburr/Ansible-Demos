@@ -2,15 +2,43 @@
 - name: demonstrate using ansible facts
   hosts: local_servers
   gather_facts: true
-  tasks:
-    - name: run lsblk
-      ansible.builtin.shell: 'lsblk -nd --output NAME'
-      register: lsblk_data
+  become: true
 
-    - name: show lsblk_data
-      anisble.builtin.debug:
-        var: lsblk_data
+  vars_prompt:
+    - name: my_command
+      prompt: What is your command?
+      private: false
 
-    - name: show ansible_facts
+  pre_tasks:
+    - name: run a command
+      ansible.builtin.command: "{{ my_command }}"
+      register: command_output
+      ignore_errors: true
+    
+    - name: show output
       ansible.builtin.debug:
-        var: ansible_facts['devices'] | to_yaml
+        var: command_output.stdout
+
+
+    - name: show output
+      ansible.builtin.debug:
+        var: command_output.stderr
+      when: command_output.rc == '1'
+#  tasks:
+#    - name: show ansible_facts distro
+#      ansible.builtin.debug:
+#        var: ansible_facts['distribution']
+#
+#    - name: run tasks for MacOSX
+#      command: "echo 'hell world'"
+#      when: sy_var == 'polystar'
+#    
+#    - name: run updates on Fedora
+#      include_tasks:
+#        file: tasks/fedora.yaml
+#      when: ansible_facts['distribution'] == 'Fedora'
+#
+#    - name: run updates on Fedora
+#      include_tasks:
+#        file: tasks/ubuntu.yaml
+#      when: ansible_facts['distribution'] == 'Ubuntu'

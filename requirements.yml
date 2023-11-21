@@ -1,0 +1,6 @@
+---
+collections:
+  - name: collections/local/ansible-posix-1.5.4.tar
+    type: file
+  - name: awx.awx
+    version: 23.4.0

@@ -2,7 +2,7 @@
 - hosts: mygroup
   connection: local
   tasks:
-    - name: Create ticket for builder
+    - name: Create ticket for "{{ inventory_hostname }}"
       ansible.builtin.uri:
         headers:
           Authorization: Bearer {{ myteam_jira_token }}
@@ -27,5 +27,8 @@
         content: "{{ my_ticket_inforamtion }}"
         dest: /tmp/myfile.json
         mode: 0777
-
-    - command: scp /tmp/myfile.json webserver.example.com:/var/www/htlm/my_out.txt
+...
+## Rough idea for adding to git repo.
+#    - command: scp /tmp/myfile.json webserver.example.com:/var/www/htlm/my_out.txt
+#
+#    - command: git add $file && git commit -m 'yes' && git push

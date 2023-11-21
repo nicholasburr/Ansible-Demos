@@ -3,21 +3,22 @@
   hosts: localhost
   connection: local
   gather_facts: false
-  vars: 
+  vars:
     my_survey_var: null
   pre_tasks:
-  - name: read vars from first file found, use 'vars/' relative subdir
-    ansible.builtin.include_vars: "{{lookup('ansible.builtin.first_found', params)}}"
-    vars:
-      params:
-        files:
-          - '{{ my_survey_var }}.yaml'
-          - main.yaml
-        paths:
-          - 'vars'
+    - name: read vars from first file found, use 'vars/' relative subdir
+      ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+      vars:
+        params:
+          files:
+            - '{{ my_survey_var }}.yaml'
+            - main.yaml
+          paths:
+            - 'vars'
 
   tasks:
-    - debug:
+    - name: show disks Variable.
+      ansible.builtin.debug:
         var: disks
 
 # find filter to only show string.

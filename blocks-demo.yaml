@@ -1,0 +1,19 @@
+---
+- name: demonstrate using ansible facts
+  hosts: local_servers
+  gather_facts: true
+  tasks:
+    - block: 
+      - get me the OpenStack IP
+
+      rescue:
+      - reboot
+
+      - get me the OpenStack IP
+      always:
+      
+      - send stautus in slack $results of get_ip_task
+
+    - name: the end
+      ansible.builtin.debug: 
+        msg: " you ahve made it to the end"  
