@@ -1,0 +1,16 @@
+---
+- hosts: 192.168.1.112
+  gather_facts: false
+  become: true
+  vars:
+    add_remove: absent
+    username: nburr
+    ssh_key:
+      - key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJJ+mdEDh3deYwQLd6BR3AV4Sjo2ofGxrWvoFa4cwL4Q nburr@nburr-mac'
+  tasks:
+    - name: setup ssh authorized kays
+      ansible.posix.authorized_key:
+        user: "{{ username }}"
+        state: "{{ add_remove | default('present') }}"
+        key: "{{ item.key }}"
+      loop: "{{ ssh_key }}"
