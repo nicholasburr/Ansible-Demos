@@ -1,0 +1,34 @@
+---
+- name: Generate CSR
+  hosts: all
+  vars:
+    csr_path: /tmp/ssl
+    generate_csr_country_name: US
+    generate_csr_state_or_province_name: NC
+    generate_csr_locality_name: Datacenter A
+    generate_csr_organization_name: HW Corp
+    generate_csr_organizational_unit_name: Hello World
+    generate_csr_email_address: admin@example.com
+
+  pre_tasks:
+    - name: "Create {{ csr_path }}"
+      file:
+        path: "{{ csr_path }}"
+        state: directory
+
+  tasks:
+    - name: Generate SSL Private Key
+      community.crypto.openssl_privatekey:
+        path: "{{ csr_path }}/{{ inventory_hostname }}.key"
+        size: 2048
+
+    - name: Generate SSL CSR
+      community.crypto.openssl_csr:
+        path: "{{ csr_path }}/{{ inventory_hostname }}.csr"
+        privatekey_path: "{{ csr_path }}/{{ inventory_hostname }}.key"
+        country_name: "{{ generate_csr_country_name }}"
+        state_or_province_name: "{{ generate_csr_state_or_province_name }}"
+        locality_name: "{{ generate_csr_locality_name }}"
+        organization_name: "{{ generate_csr_organization_name }}"
+        organizational_unit_name: "{{ generate_csr_organizational_unit_name }}"
+        email_address: "{{ generate_csr_email_address }}"
