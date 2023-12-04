@@ -9,6 +9,8 @@
     generate_csr_organization_name: HW Corp
     generate_csr_organizational_unit_name: Hello World
     generate_csr_email_address: admin@example.com
+    uri_host:
+    uri_api_version:
 
   pre_tasks:
     - name: "Create {{ csr_path }}"
@@ -32,3 +34,26 @@
         organization_name: "{{ generate_csr_organization_name }}"
         organizational_unit_name: "{{ generate_csr_organizational_unit_name }}"
         email_address: "{{ generate_csr_email_address }}"
+
+    - name: Get access token from uri
+      ansible.builtin.uri:
+        url: "{{ uri_host }}/oauth2/token"
+        method: POST
+        body_format: form-urlencoded
+        body:
+          grant_type: password
+          username: "{{ uri_user }}"
+          password: "{{ uri_password }}"
+      register: _uri_at
+
+    - name: "Search for item "
+      ansible.builtin.uri:
+        url: "{{ uri_host }}/api/{{ uri_api_version }}/rest/folders"
+        method: GET
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ _uri_at.json.access_token }}"
+      register: _uri_folders
+
+    - debug: 
+        var: _uri_folders
